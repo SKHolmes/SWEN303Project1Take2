@@ -1,0 +1,11 @@
+how to git:
+
+git add .
+git commit -m "comment"
+git pull
+[:q]
+git push
+SKHolmes
+password
+
+python -m SimpleHTTPServer 8000
