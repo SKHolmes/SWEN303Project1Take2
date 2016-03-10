@@ -1,4 +1,4 @@
-# SWEN303Project1
+# SWEN303Project1Take2
 
 ## ToDo
 
@@ -12,8 +12,5 @@
 - [ ] Set up checkboxes for every persona for Challenge.
 
 ### Core Personas
-
-
-
 
 
