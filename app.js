@@ -4,12 +4,29 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var basex = require('basex');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
+var addEdit = require('./routes/addEdit')
+console.log('Creating Client');
+var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
+console.log('Created Client');
 var app = express();
+console.log('Opening Colenso');
+client.execute("OPEN Colenso");
+console.log('Opened Colenso');
+console.log('Executing function');
+client.execute("XQUERY //name", function(
+  error, result){
+  if(error){
+    console.log(error);
+  }else{
+    console.log(result +"\n");
+  }
+console.log('Fucked up');
 
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -24,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/addEdit', addEdit);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,6 +63,7 @@ if (app.get('env') === 'development') {
     });
   });
 }
+
 
 // production error handler
 // no stacktraces leaked to user
