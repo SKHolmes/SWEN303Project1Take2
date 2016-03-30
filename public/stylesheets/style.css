@@ -17,3 +17,11 @@ a {
 .hidden{
 	display: none;
 }
+
+.unsafe{
+	display: none;
+}
+
+.safe{
+	display: inline-block;
+}

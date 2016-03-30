@@ -39,9 +39,24 @@ block body
 					| Title
 					input(class="item", type="checkbox", name="Content", value="1") 
 					| Content
-			form(action="/open", method="post")
-				.col-md-5
-				#resultsParent				
+	form(action="/open", method="post")				
+		#resultsParent
+			h3(class='safe', id='noXML') !{file}				
+			h3(class='unsafe', id='XML') #{file}
+			script(type='text/javascript').
+				var toggleXML = function(){
+					var noXML = document.getElementById('noXML');
+					var XML = document.getElementById('XML');
+
+					if(noXML.className == 'safe'){
+						noXML.className = 'unsafe';
+					}else{noXML.className = 'safe';}
+
+					if(XML.className == 'safe'){
+						XML.className = 'unsafe';
+					}else{XML.className = 'safe';}
+				}
+			button.btn.btn-success(class="item", type='button', onclick='toggleXML()') Toggle XML
 		hr
 		footer
 			p Samual Kaleb Baldwin-Holmes, Student 300292295, Victoria University, Wellington, 2016
@@ -52,7 +67,7 @@ block body
 				var array = text.split(',');
 				var i = 0;
 				var parent = document.getElementById('resultsParent');
-				for(; i<array.length; i++){
+				for(i; i<array.length; i++){
 					var btn = document.createElement('button');
 					btn.id = '' + i;
 					btn.innerHTML = array[i];

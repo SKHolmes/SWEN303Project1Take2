@@ -82,12 +82,14 @@ router.get('/', function (req, res) {
 router.post('/open', function (req, res) {
   console.log('open some shiet');
   var fileName = Object.getOwnPropertyNames(req.body)[0];
-  var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; fn:doc(Colenso/\""+fileName+"\")";
+  var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $doc in collection('Colenso') where matches(document-uri($doc), '"+fileName+"') return $doc";
+  console.log(txt);
   client.execute(txt, function(error, result){
     if(error){
       console.log(error);
     }else{
       console.log(result);
+      res.render('search', {title: 'Colenso Project', file: result.result})
     }
 
   });
