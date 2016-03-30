@@ -8,25 +8,28 @@ var basex = require('basex');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var addEdit = require('./routes/addEdit')
-console.log('Creating Client');
+var search = require('./routes/search')
+
 var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
-console.log('Created Client');
+
+
 var app = express();
-console.log('Opening Colenso');
+
+
 client.execute("OPEN Colenso");
-console.log('Opened Colenso');
-console.log('Executing function');
-client.execute("XQUERY //name", function(
+client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; (//body)[1]", function(
   error, result){
   if(error){
     console.log(error);
   }else{
-    console.log(result +"\n");
+    //console.log(result);
+    console.log(result.result);
   }
-console.log('Fucked up');
-
 });
+//var res = client.query('//name');
+console.log('Done');
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -39,9 +42,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var router = express.Router();
+app.use(router);
+
 app.use('/', routes);
 app.use('/users', users);
-app.use('/addEdit', addEdit);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -73,6 +79,24 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });
+});
+
+/*router.post('/search', function (req, res) {
+  alert('here');
+    console.log(req.body.title);
+    console.log(req.body.description);
+    res.send('Post page');
+});*/
+
+
+router.get('/', function (req, res) {  
+  res.render('index');
+});
+
+router.post('/search', function (req, res) {  
+  console.log('in search');
+  var query = req.body.query;
+  res.end('search: ' + query);
 });
 
 
