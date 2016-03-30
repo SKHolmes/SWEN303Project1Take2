@@ -14,9 +14,6 @@ block body
 					span.icon-bar
 				a.navbar-brand(href='#') Colenso Project
 			#navbar.navbar-collapse.collapse
-				form.navbar-form.navbar-right
-					.form-group
-					button.btn.btn-success(class='navItem' type='submit') Search
 	.jumbotron
 		.container
 			h1 Search
@@ -32,19 +29,21 @@ block body
 		.row
 			.col-md-5
 				h2 Find your file...
-				.form-group
-					input.form-control(id="searchBox", class="item", type='text', placeholder='Search...')
-					button.btn.btn-success(class="item", type='submit', onclick='') Search
-
+				form(action="/search", method="post")
+					input.form-control(id="searchBox", name="query", class="item", type='text', placeholder='Search...')
+					button.btn.btn-success(class="item", type='submit') Search
+					input(class="item", type="checkbox", name="Names", value="1") 
+					| Author
+					input(class="item", type="checkbox", name="Title", value="1") 
+					| Title
+					input(class="item", type="checkbox", name="Content", value="1") 
+					| Content
 			.col-md-5
 				h2 Or upload a new one!				
 				button.btn.btn-success(type='submit') Search
 				h3(id='file_text') No file selected.
 				button.btn.btn-success(type='submit') Upload
-						hr
+		hr
 		footer
 			p Samual Kaleb Baldwin-Holmes, Student 300292295, Victoria University, Wellington, 2016
-	form(action="/search", method="post")  
-		input(type="text", name="query")
-		input(type="submit", value="Show me!")
 	block content

@@ -17,17 +17,15 @@ var app = express();
 
 
 client.execute("OPEN Colenso");
-client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; (//body)[1]", function(
+/*client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; (//body)[1]", function(
   error, result){
   if(error){
     console.log(error);
   }else{
-    //console.log(result);
     console.log(result.result);
   }
 });
-//var res = client.query('//name');
-console.log('Done');
+console.log('Done');*/
 
 
 // view engine setup
@@ -94,10 +92,74 @@ router.get('/', function (req, res) {
 });
 
 router.post('/search', function (req, res) {  
-  console.log('in search');
   var query = req.body.query;
+  var ColensoMap = {};
+  
+  if(req.body.Names){
+    ColensoMap = searchNames(query);
+  }
+  if(req.body.Title){
+    ColensoMap = searchTitles(query);
+  }
+  if(req.body.Content){
+    ColensoMap = searchContent(query);
+  }
+  //By default if no checkbox is select search all possiblities.
+  if(!(req.body.Names||req.body.Content||req.body.Title)){
+    ColensoMap = searchContent(query);
+    ColensoMap = searchNames(query);
+    ColensoMap = searchTitles(query);
+  }
   res.end('search: ' + query);
 });
 
+searchTitles = function(query){
+  var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; //title[contains(., \""+query+"\")]";
+  console.log(txt);
+  //client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; (//body)[1]", function(
+  client.execute(txt, function(
+  error, result){
+    if(error){
+      console.log(error);
+    }else{
+      console.log("Result = : \'" + result.result +"\'");
+    }
+  });
+  console.log('Done');
+}
+
+searchNames = function(query){
+  var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //name[contains(., \""+query+"\")] return db:path($t)";
+  console.log(txt);
+  //client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; (//body)[1]", function(
+  client.execute(txt, function(
+  error, result){
+    if(error){
+      console.log(error);
+    }else{
+      console.log(result);
+      console.log("Result = : \'" + result.result +"\'");
+    }
+  });
+  console.log('Done');
+}
+
+searchContent = function(query){
+  var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; //body[contains(., \""+query+"\")]";
+  //var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; //body[client:query(., \'\""+query+"\"\')]";
+  //SPEECH[contains(LINE, "hurlyburly")]
+
+  console.log(txt);
+  //client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; (//body)[1]", function(
+  client.execute(txt, function(
+  error, result){
+    if(error){
+      console.log(error);
+    }else{
+      console.log("Result = : \'" + result.result +"\'");
+    }
+  });
+  console.log('Done');
+}
 
 module.exports = app;
