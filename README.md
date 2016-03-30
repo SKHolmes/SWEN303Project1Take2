@@ -3,7 +3,7 @@
 ## ToDo
 
 - [x] Set up GIT for pushing and pulling.
-- [ ] Figure out my BaseX bug.
+- [x] Figure out my BaseX bug.
 - [x] Put initial XML files in a BaseX server.
 - [x] Decide on Ionic, Bootstrap or Polymer Framework. Bootstrap!
 - [x] Get a homepage working for testing.
