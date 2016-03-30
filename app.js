@@ -13,7 +13,6 @@ var search = require('./routes/search')
 var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
 
 var app = express();
-var Colenso;
 
 client.execute("OPEN Colenso");
 
@@ -80,6 +79,20 @@ router.get('/', function (req, res) {
   res.render('index');
 });
 
+router.post('/open', function (req, res) {
+  console.log('open some shiet');
+  var fileName = Object.getOwnPropertyNames(req.body)[0];
+  var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; fn:doc(Colenso/\""+fileName+"\")";
+  client.execute(txt, function(error, result){
+    if(error){
+      console.log(error);
+    }else{
+      console.log(result);
+    }
+
+  });
+});  
+
 router.post('/search', function (req, res) {  
   var query = req.body.query;
   
@@ -99,8 +112,9 @@ router.post('/search', function (req, res) {
 });
 
 splitResult = function(result, res){
-  Colenso = result.split(/\r?\n/);
-  res.send(Colenso);  
+  var Colenso = result.split(/\r?\n/);
+  res.render('search', {title: 'Colenso Project', searchRes: Colenso});  
+  //res.send(Colenso);
 }
 
 searchTitles = function(query, res){

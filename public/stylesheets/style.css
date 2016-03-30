@@ -10,3 +10,10 @@ a {
 .item{
 	margin: 10px;
 }
+.btn{
+	margin: 10px;
+}
+
+.hidden{
+	display: none;
+}

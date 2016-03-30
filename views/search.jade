@@ -4,6 +4,7 @@ append styles
 	link(href='stylesheets/jumbotron.css', rel='stylesheet', type='text/css')
 	link(href='stylesheets/style.css', rel='stylesheet', type='text/css')
 block body
+	h2(id="results", class='hidden') #{searchRes}
 	nav.navbar.navbar-inverse.navbar-fixed-top
 		.container
 			.navbar-header
@@ -38,12 +39,26 @@ block body
 					| Title
 					input(class="item", type="checkbox", name="Content", value="1") 
 					| Content
-			.col-md-5
-				h2 Or upload a new one!				
-				button.btn.btn-success(type='submit') Search
-				h3(id='file_text') No file selected.
-				button.btn.btn-success(type='submit') Upload
+			form(action="/open", method="post")
+				.col-md-5
+				#resultsParent				
 		hr
 		footer
 			p Samual Kaleb Baldwin-Holmes, Student 300292295, Victoria University, Wellington, 2016
+			script(type='text/javascript').
+				console.log('hello');
+				var ele = document.getElementById('results');
+				var text = ele.innerHTML;
+				var array = text.split(',');
+				var i = 0;
+				var parent = document.getElementById('resultsParent');
+				for(; i<array.length; i++){
+					var btn = document.createElement('button');
+					btn.id = '' + i;
+					btn.innerHTML = array[i];
+					btn.className = 'btn';
+					btn.type = 'submit';
+					btn.name = array[i];
+					parent.appendChild(btn);
+				}
 	block content
