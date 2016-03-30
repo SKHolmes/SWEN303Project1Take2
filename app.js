@@ -67,23 +67,13 @@ app.use(function(err, req, res, next) {
   });
 });
 
-/*router.post('/search', function (req, res) {
-  alert('here');
-    console.log(req.body.title);
-    console.log(req.body.description);
-    res.send('Post page');
-});*/
-
-
 router.get('/', function (req, res) {  
   res.render('index');
 });
 
 router.post('/open', function (req, res) {
-  console.log('open some shiet');
   var fileName = Object.getOwnPropertyNames(req.body)[0];
   var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $doc in collection('Colenso') where matches(document-uri($doc), '"+fileName+"') return $doc";
-  console.log(txt);
   client.execute(txt, function(error, result){
     if(error){
       console.log(error);
@@ -116,12 +106,10 @@ router.post('/search', function (req, res) {
 splitResult = function(result, res){
   var Colenso = result.split(/\r?\n/);
   res.render('search', {title: 'Colenso Project', searchRes: Colenso});  
-  //res.send(Colenso);
 }
 
 searchTitles = function(query, res){
   var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //title[contains(., \""+query+"\")] return db:path($t)";
-  console.log(txt);
   client.execute(txt, function(
   error, result){
     if(error){
@@ -134,7 +122,6 @@ searchTitles = function(query, res){
 
 searchNames = function(query, res){
   var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //name[contains(., \""+query+"\")] return db:path($t)";
-  console.log(txt);
   client.execute(txt, function(
   error, result){
     if(error){
@@ -147,7 +134,6 @@ searchNames = function(query, res){
 
 searchContent = function(query, res){
   var txt = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //body[contains(., \""+query+"\")] return db:path($t)";
-  console.log(txt);
   client.execute(txt, function(
   error, result){
     if(error){
